@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Zaky Book Store | د لټون بکس + ډاونلوډ کاونټر</title>
+<meta name="description" content="Zaky Book Store - نړیوال پښتو ډیجیټل کتابتون. د کتابونو لوستل، ډاونلوډ، او شریکول">
+<meta name="keywords" content="کتاب, پښتو, کتابتون, ډاونلوډ, PDF, زاکي, Zaky">
+<meta name="author" content="سیال احمدزی">
+<meta property="og:title" content="Zaky Book Store">
+<meta property="og:description" content="نړیوال پښتو ډیجیټل کتابتون - وړیا کتابونه">
+<meta property="og:type" content="website">
+<title>Zaky Book Store | نړیوال پښتو کتابتون</title>
 <style>
 * {
   margin: 0;
@@ -87,7 +93,7 @@ body {
   box-shadow: 0 0 0 3px rgba(249,115,22,0.3);
 }
 
-/* د روباټ جیکر سټایل */
+/* د روباټ چیکر سټایل */
 .robot-check {
   background: #1e293b;
   border: 1px solid var(--border);
@@ -180,7 +186,7 @@ header {
 
 .logo h2 { font-size: 1.5rem; color: var(--primary); }
 
-/* د لټون بکس - سرچ بار */
+/* د لټون بکس */
 .search-container {
   flex: 1;
   max-width: 400px;
@@ -266,7 +272,6 @@ nav {
   display: block;
 }
 
-/* د لټون پایلې سرلیک */
 .search-info {
   background: #1e293b;
   padding: 10px 18px;
@@ -432,6 +437,20 @@ button.action-btn {
   color: var(--text-muted);
   font-size: 1.1rem;
 }
+
+.footer {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  border-top: 1px solid var(--border);
+  margin-top: 30px;
+}
+
+.footer a {
+  color: var(--primary);
+  text-decoration: none;
+}
 </style>
 </head>
 <body>
@@ -440,7 +459,7 @@ button.action-btn {
 <div id="loginScreen" class="login-wrapper">
   <div class="login-card">
     <h1>📚 Zaky Book Store</h1>
-    <p>د لټون بکس + ډاونلوډ کاونټر • د روباټ جیکر محافظت</p>
+    <p>نړیوال پښتو ډیجیټل کتابتون • وړیا • د ټولو لپاره</p>
     <div class="input-group">
       <input type="email" id="loginEmail" placeholder="برېښنالیک">
     </div>
@@ -476,8 +495,7 @@ button.action-btn {
 <div id="mainApp" class="main-app">
   <header>
     <div class="header-container">
-      <div class="logo"><h2>📖 Zaky Book Store PRO</h2></div>
-      <!-- د لټون بکس (Search Box) -->
+      <div class="logo"><h2>📖 Zaky Book Store</h2></div>
       <div class="search-container">
         <input type="text" id="searchInput" placeholder="🔍 د کتاب نوم، لیکوال یا کټګورۍ دلته ولیکئ...">
       </div>
@@ -510,12 +528,16 @@ button.action-btn {
     
     <div id="messagesPage" class="page"><h2>پیغامونه</h2><div id="messagesList"></div><input id="msgName" placeholder="نوم"><input id="msgContact" placeholder="واټساپ"><textarea id="msgText" rows="2" placeholder="پیغام..."></textarea><button id="sendMsgBtn" class="action-btn">لیږل</button></div>
     
-    <div id="contactPage" class="page"><h2>اړیکه</h2><p>📧 zangi32zaky@gmail.com<br>📞 0093773701014<br>💬 سیال احمدزی</p></div>
+    <div id="contactPage" class="page"><h2>اړیکه</h2><p>📧 zangi32zaky@gmail.com<br>📞 0093773701014<br>💬 0093711933858 (واټساپ)<br>👤 سیال احمدزی</p><br><p style="background:#1e293b; padding:15px; border-radius:20px;">🌍 دا یو نړیوال پروژه ده • د ټولو پښتو ژبو مینه والو لپاره</p></div>
+  </div>
+  <div class="footer">
+    <p>© 2025 Zaky Book Store | نړیوال پښتو ډیجیټل کتابتون</p>
+    <p>🔗 GitHub: <a href="https://github.com/yourusername/zakybookstore" target="_blank">github.com/yourusername/zakybookstore</a></p>
   </div>
 </div>
 
 <script>
-  // ==================== د لټون بکس + ډاونلوډ کاونټر سره بشپړ سیسټم ====================
+  // ==================== د Zaky Book Store نړیواله نسخه ====================
   let users = [];
   let books = [];
   let bookRequests = [];
@@ -542,52 +564,63 @@ button.action-btn {
     }
   }
   
-  // د بندیز سیستم
-  let failedAttempts = 0;
-  let banUntil = null;
+  let failedAttempts = {};
+  let banUntil = {};
   
   function loadBanData(){
-    const storedBan = localStorage.getItem("zaky_ban_until");
-    const storedFails = localStorage.getItem("zaky_fail_attempts");
-    if(storedBan) banUntil = parseInt(storedBan);
-    if(storedFails) failedAttempts = parseInt(storedFails);
-    if(banUntil && Date.now() > banUntil) {
-      banUntil = null;
-      failedAttempts = 0;
-      localStorage.removeItem("zaky_ban_until");
-      localStorage.setItem("zaky_fail_attempts", "0");
+    const storedFails = localStorage.getItem("zaky_fail_attempts_global");
+    const storedBans = localStorage.getItem("zaky_ban_until_global");
+    if(storedFails) failedAttempts = JSON.parse(storedFails);
+    if(storedBans) banUntil = JSON.parse(storedBans);
+    for(let email in banUntil){
+      if(banUntil[email] && Date.now() > banUntil[email]){
+        delete banUntil[email];
+        delete failedAttempts[email];
+      }
     }
+    saveBanData();
   }
-  function saveBan(){
-    if(banUntil) localStorage.setItem("zaky_ban_until", banUntil);
-    localStorage.setItem("zaky_fail_attempts", failedAttempts);
+  
+  function saveBanData(){
+    localStorage.setItem("zaky_fail_attempts_global", JSON.stringify(failedAttempts));
+    localStorage.setItem("zaky_ban_until_global", JSON.stringify(banUntil));
   }
-  function isBanned(){
-    return banUntil && Date.now() < banUntil;
-  }
-  function recordFailedLogin(){
-    failedAttempts++;
-    if(failedAttempts >= 3){
-      banUntil = Date.now() + (4 * 24 * 60 * 60 * 1000);
-      failedAttempts = 0;
-      saveBan();
-      return true;
-    }
-    saveBan();
+  
+  function isUserBanned(email){
+    const user = users.find(u => u.email === email);
+    if(user && user.role === "admin") return false;
+    if(banUntil[email] && Date.now() < banUntil[email]) return true;
     return false;
   }
-  function resetFailedAttempts(){
-    failedAttempts = 0;
-    banUntil = null;
-    saveBan();
+  
+  function recordFailedLogin(email){
+    const user = users.find(u => u.email === email);
+    if(user && user.role === "admin") return false;
+    failedAttempts[email] = (failedAttempts[email] || 0) + 1;
+    if(failedAttempts[email] >= 3){
+      banUntil[email] = Date.now() + (4 * 24 * 60 * 60 * 1000);
+      failedAttempts[email] = 0;
+      saveBanData();
+      return true;
+    }
+    saveBanData();
+    return false;
+  }
+  
+  function resetFailedAttempts(email){
+    const user = users.find(u => u.email === email);
+    if(user && user.role === "admin") return;
+    delete failedAttempts[email];
+    delete banUntil[email];
+    saveBanData();
   }
   
   function hashPass(pwd){
-    return btoa(pwd + "zakySecurePepper2025!");
+    return btoa(pwd + "zakyGlobalSecure2025!");
   }
   
   function loadData(){
-    const storedUsers = localStorage.getItem("zaky_users_secure_v5");
+    const storedUsers = localStorage.getItem("zaky_users_global");
     if(storedUsers) users = JSON.parse(storedUsers);
     else {
       users = [
@@ -595,42 +628,39 @@ button.action-btn {
         { id:2, name:"احمد جان", email:"ahmad@example.com", password:hashPass("123456"), role:"user", createdAt:new Date().toISOString() }
       ];
     }
-    const storedBooks = localStorage.getItem("zaky_books_approved_v5");
+    const storedBooks = localStorage.getItem("zaky_books_global");
     if(storedBooks) books = JSON.parse(storedBooks);
     else books = [
       { id:1, title:"پښتو ژبه لومړی ټولګی", category:"school", pdf:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", desc:"د لومړي ټولګي کتاب", author:"وزارت تعلیم", downloads:0 },
       { id:2, title:"کمپیوټر پېژندنه", category:"computer", pdf:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", desc:"د کمپیوټر اساسات", author:"احمد رضا", downloads:0 },
       { id:3, title:"د افغانستان تاریخ", category:"history", pdf:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", desc:"له پخوانیو وختونو تر اوسه", author:"پوهاند محمد", downloads:0 },
       { id:4, title:"د رحمان بابا دیوان", category:"poetry", pdf:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", desc:"پښتو مشهور شاعر", author:"رحمان بابا", downloads:0 },
+      { id:5, title:"English Grammar", category:"other", pdf:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", desc:"د انګلیسي ګرامر", author:"John Smith", downloads:0 }
     ];
-    const storedRequests = localStorage.getItem("zaky_book_requests_v5");
+    const storedRequests = localStorage.getItem("zaky_requests_global");
     if(storedRequests) bookRequests = JSON.parse(storedRequests);
     else bookRequests = [];
-    
-    const storedMsgs = localStorage.getItem("zaky_messages_secure_v5");
+    const storedMsgs = localStorage.getItem("zaky_messages_global");
     messages = storedMsgs ? JSON.parse(storedMsgs) : [];
-    const session = localStorage.getItem("zaky_current_session_v5");
+    const session = localStorage.getItem("zaky_session_global");
     if(session) currentUser = JSON.parse(session);
   }
   
   function saveAll(){
-    localStorage.setItem("zaky_users_secure_v5", JSON.stringify(users));
-    localStorage.setItem("zaky_books_approved_v5", JSON.stringify(books));
-    localStorage.setItem("zaky_book_requests_v5", JSON.stringify(bookRequests));
-    localStorage.setItem("zaky_messages_secure_v5", JSON.stringify(messages));
-    if(currentUser) localStorage.setItem("zaky_current_session_v5", JSON.stringify(currentUser));
-    else localStorage.removeItem("zaky_current_session_v5");
+    localStorage.setItem("zaky_users_global", JSON.stringify(users));
+    localStorage.setItem("zaky_books_global", JSON.stringify(books));
+    localStorage.setItem("zaky_requests_global", JSON.stringify(bookRequests));
+    localStorage.setItem("zaky_messages_global", JSON.stringify(messages));
+    if(currentUser) localStorage.setItem("zaky_session_global", JSON.stringify(currentUser));
+    else localStorage.removeItem("zaky_session_global");
   }
   
-  // د ډاونلوډ کاونټر زیاتول
   function incrementDownload(bookId){
     const book = books.find(b => b.id === bookId);
     if(book){
       book.downloads = (book.downloads || 0) + 1;
       saveAll();
-      // د لټون پر بنسټ بیا رینډر کول
       performSearch(currentSearchTerm);
-      // که چیرې په کټګورۍ پاڼه کې یو، هغه هم تازه کړو
       const currentCat = document.querySelector("[data-cat].active");
       if(currentCat && currentCat.getAttribute("data-cat")){
         filterCategory(currentCat.getAttribute("data-cat"));
@@ -638,14 +668,12 @@ button.action-btn {
     }
   }
   
-  // د ډاونلوډ هینډلر
-  function handleDownload(bookId, pdfUrl){
+  window.handleDownload = function(bookId, pdfUrl){
     incrementDownload(bookId);
     window.open(pdfUrl, '_blank');
     showToast("📥 ډاونلوډ پیل شو! دا کتاب " + (books.find(b=>b.id===bookId)?.downloads || 0) + " ځله ډاونلوډ شوی");
-  }
+  };
   
-  // ========== د لټون فنکشن ==========
   function performSearch(searchTerm){
     currentSearchTerm = searchTerm;
     if(!searchTerm || searchTerm.trim() === ""){
@@ -666,7 +694,6 @@ button.action-btn {
     renderBooks("homeBooksGrid", filtered);
   }
   
-  // د کتابونو رینډر کول (د ډاونلوډ تڼۍ سره)
   function renderBooks(containerId, bookArray){
     const cont = document.getElementById(containerId);
     if(!cont) return;
@@ -813,30 +840,36 @@ button.action-btn {
   }
   window.deleteMsg = (id)=>{ if(currentUser?.role==="admin"){ messages=messages.filter(m=>m.id!==id); saveAll(); renderMessages(); } };
   
-  // ========== لاګ ان منطق ==========
   function attemptLogin(email, password){
     if(!loginRobotVerified){
-      document.getElementById("loginError").innerHTML = "⚠️ مهرباني وکړئ د روباټ چیک باکس کې ټک وکړئ!";
+      document.getElementById("loginError").innerHTML = "⚠️ مهرباني وکړئ د روباټ چیکر باکس کې ټک وکړئ!";
       return false;
     }
-    if(isBanned()){
-      const remaining = Math.ceil((banUntil - Date.now()) / (1000*60*60*24));
-      document.getElementById("loginError").innerHTML = `⛔ تاسو د ${remaining} ورځو لپاره بندیز یاست.`;
-      return false;
+    const targetUser = users.find(u => u.email === email);
+    if(targetUser && targetUser.role !== "admin"){
+      if(isUserBanned(email)){
+        const remaining = Math.ceil((banUntil[email] - Date.now()) / (1000*60*60*24));
+        document.getElementById("loginError").innerHTML = `⛔ تاسو د ${remaining} ورځو لپاره بندیز یاست.`;
+        return false;
+      }
     }
     const hashed = hashPass(password);
     const user = users.find(u=> u.email === email && u.password === hashed);
     if(user){
-      resetFailedAttempts();
+      resetFailedAttempts(email);
       currentUser = { name: user.name, email: user.email, role: user.role };
       saveAll();
       return true;
     } else {
-      const bannedNow = recordFailedLogin();
+      if(targetUser && targetUser.role === "admin"){
+        document.getElementById("loginError").innerHTML = "غلط پاسورډ! ادمین ته بندیز نه لګېږي.";
+        return false;
+      }
+      const bannedNow = recordFailedLogin(email);
       if(bannedNow){
         document.getElementById("loginError").innerHTML = "⛔ 3 ځله غلط پاسورډ! تاسو د 4 ورځو لپاره بند شئ.";
       } else {
-        let left = 3 - failedAttempts;
+        let left = 3 - (failedAttempts[email] || 0);
         document.getElementById("loginError").innerHTML = `غلط پاسورډ! تاسو ${left} فرصت لرئ.`;
       }
       return false;
@@ -845,7 +878,7 @@ button.action-btn {
   
   function register(name, email, pass){
     if(!registerRobotVerified){
-      alert("⚠️ مهرباني وکړئ د راجسټر لپاره د روباټ چیک باکس کې ټک وکړئ!");
+      alert("⚠️ مهرباني وکړئ د راجسټر لپاره د روباټ چیکر باکس کې ټک وکړئ!");
       return false;
     }
     if(users.find(u=> u.email === email)){ alert("دا برېښنالیک شتون لري"); return false; }
@@ -899,7 +932,7 @@ button.action-btn {
     setTimeout(()=>div.remove(), 3000);
   }
   
-  // ========== Event Listeners ==========
+  // Event Listeners
   document.getElementById("loginBtn").onclick = () => {
     const email = document.getElementById("loginEmail").value;
     const pass = document.getElementById("loginPassword").value;
@@ -937,7 +970,6 @@ button.action-btn {
     if(n&&c&&t){ messages.unshift({id:Date.now(),name:n,contact:c,text:t,date:new Date().toLocaleString()}); saveAll(); renderMessages(); showToast("پیغام واستول شو");}
   };
   
-  // د لټون بکس event
   const searchInput = document.getElementById("searchInput");
   if(searchInput){
     searchInput.addEventListener("input", (e) => {
@@ -945,14 +977,12 @@ button.action-btn {
     });
   }
   
-  // نویګیشن
   document.querySelectorAll(".nav-btn").forEach(btn=>{
     btn.onclick = ()=>{
       let pageId = btn.getAttribute("data-page")+"Page";
       document.querySelectorAll(".page").forEach(p=>p.classList.remove("active-page"));
       document.getElementById(pageId).classList.add("active-page");
       if(pageId === "homePage") {
-        // کور ته تللو سره د لټون حالت پاتې شي
         performSearch(searchInput ? searchInput.value : "");
       }
       if(pageId === "categoriesPage") filterCategory("all");
@@ -971,9 +1001,6 @@ button.action-btn {
   });
   
   function escapeHtml(str){ if(!str) return ""; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;});}
-  
-  // نړیوال فنکشن
-  window.handleDownload = handleDownload;
   
   loadBanData();
   loadData();
