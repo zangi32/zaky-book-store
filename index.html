@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="ps">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zaky Book Store PRO</title>
+<style>
+:root{
+  --bg:#0b1220;
+  --card:#111c33;
+  --accent:#38bdf8;
+  --text:#e5e7eb;
+}body{ margin:0; font-family:Arial, sans-serif; background:var(--bg); color:var(--text); }
+
+header{ background:#0f172a; padding:15px; text-align:center; position:sticky; top:0; z-index:10; }
+
+header h1{margin:0;color:var(--accent);font-size:20px;} header p{margin:5px 0;font-size:12px;color:#94a3b8;}
+
+/* NAV */ nav{ display:flex; flex-wrap:wrap; justify-content:center; background:#111827; padding:10px; }
+
+nav button{ background:none; border:1px solid #1f2937; color:white; margin:5px; padding:8px 12px; border-radius:8px; font-size:12px; cursor:pointer; } nav button:hover{ border-color:var(--accent); color:var(--accent); }
+
+/* MAIN CONTAINER FULL WIDTH FIX */ .container{ width:100%; padding:10px; box-sizing:border-box; }
+
+/* PAGES */ .page{ display:none; width:100%; background:var(--card); padding:15px; margin-top:10px; border-radius:12px; box-sizing:border-box; }
+
+.active{display:block;}
+
+/* INPUTS FULL FIX */ input,button{ width:100%; padding:10px; margin-top:8px; border:none; border-radius:8px; box-sizing:border-box; }
+
+button.action{ background:var(--accent); color:black; font-weight:bold; cursor:pointer; }
+
+button.action:hover{ background:#0ea5e9; }
+
+/* BOOK GRID FIX (FULL SCREEN) */ .books{ display:grid; grid-template-columns:1fr; gap:10px; width:100%; }
+
+.book{ background:#0f172a; padding:12px; border-radius:10px; border:1px solid #1f2937; width:100%; box-sizing:border-box; }
+
+.book h3{ margin:0 0 5px 0; font-size:14px; color:var(--accent); }
+
+a{color:var(--accent);}
+
+/* RESPONSIVE (TABLET+) */ @media(min-width:600px){ .books{ grid-template-columns:repeat(2,1fr); } }
+
+@media(min-width:900px){ .books{ grid-template-columns:repeat(3,1fr); } }
+
+</style>
+</head>
+<body><header>
+<h1>Zaky Book Store 📚 PRO</h1>
+<p>Mobile Fixed Layout Version</p>
+</header><nav>
+<button onclick="show('home')">کتابونه</button>
+<button onclick="show('upload')">Upload</button>
+<button onclick="show('admin')">ادمن</button>
+<button onclick="show('login')">Login</button>
+<button onclick="show('contact')">اړیکه</button>
+</nav><div class="container"><!-- HOME --><div id="home" class="page active">
+<h3>📚 Books</h3>
+<div id="list" class="books"></div>
+</div><!-- UPLOAD --><div id="upload" class="page">
+<h3>📤 Upload Book</h3>
+<input id="utitle" placeholder="Book Title">
+<input id="updf" placeholder="PDF Link">
+<button class="action" onclick="uploadBook()">Submit</button>
+</div><!-- ADMIN --><div id="admin" class="page">
+<h3>🛡 Admin</h3>
+<input id="title" placeholder="Book Title">
+<input id="pdf" placeholder="PDF Link">
+<button class="action" onclick="addBook()">Add Book</button>
+</div><!-- LOGIN --><div id="login" class="page">
+<h3>🔐 Login</h3>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button class="action" onclick="register()">Register</button>
+<button class="action" onclick="login()">Login</button>
+</div><!-- CONTACT --><div id="contact" class="page">
+<h3>📞 Contact</h3>
+<p>📧 zangi32zaky@gmail.com</p>
+<p>📱 0093773701014</p>
+<p>💬 0093711933858</p>
+<p>📘 سیال احمدزی</p>
+</div></div><script>
+let books=[];
+
+function show(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function render(){
+  let box=document.getElementById('list');
+  box.innerHTML="";
+  books.forEach(b=>{
+    box.innerHTML+=`
+    <div class='book'>
+      <h3>${b.title}</h3>
+      <a href='${b.pdf}' target='_blank'>📖 Read</a>
+    </div>`;
+  });
+}
+
+function addBook(){
+  books.push({title:title.value,pdf:pdf.value});
+  render();
+}
+
+function uploadBook(){
+  books.push({title:utitle.value,pdf:updf.value});
+  render();
+}
+
+function register(){
+  alert("Registered (demo)");
+}
+
+function login(){
+  alert("Login (demo)");
+}
+
+render();
+</script></body>
+</html>
