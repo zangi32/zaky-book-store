@@ -1,141 +1,983 @@
-<!DOCTYPE html><html lang="ps">
+<!DOCTYPE html>
+<html lang="ps">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zaky Book Store PRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Zaky Book Store | د لټون بکس + ډاونلوډ کاونټر</title>
 <style>
-:root{
-  --bg:#0b1220;
-  --card:#111c33;
-  --accent:#38bdf8;
-  --text:#e5e7eb;
-}body{ margin:0; font-family:Arial, sans-serif; background:var(--bg); color:var(--text); }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-header{ background:#0f172a; padding:15px; text-align:center; position:sticky; top:0; z-index:10; }
+:root {
+  --primary: #f97316;
+  --primary-dark: #ea580c;
+  --dark-bg: #0a0f1c;
+  --card-bg: #111827;
+  --glass: rgba(17, 24, 39, 0.95);
+  --text-light: #f8fafc;
+  --text-muted: #9ca3af;
+  --border: #374151;
+  --danger: #ef4444;
+  --success: #10b981;
+}
 
-header h1{margin:0;color:var(--accent);font-size:20px;} header p{margin:5px 0;font-size:12px;color:#94a3b8;}
+body {
+  background: linear-gradient(145deg, #0b1120 0%, #060b17 100%);
+  color: var(--text-light);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
 
-/* NAV */ nav{ display:flex; flex-wrap:wrap; justify-content:center; background:#111827; padding:10px; }
+/* لاګ ان سټایل */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: radial-gradient(circle at 10% 20%, #0f172a, #020617);
+}
 
-nav button{ background:none; border:1px solid #1f2937; color:white; margin:5px; padding:8px 12px; border-radius:8px; font-size:12px; cursor:pointer; } nav button:hover{ border-color:var(--accent); color:var(--accent); }
+.login-card {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border-radius: 48px;
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid rgba(249,115,22,0.3);
+  box-shadow: 0 25px 50px -12px black;
+}
 
-/* MAIN CONTAINER FULL WIDTH FIX */ .container{ width:100%; padding:10px; box-sizing:border-box; }
+.login-card h1 {
+  font-size: 2rem;
+  background: linear-gradient(135deg, #f97316, #facc15);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 8px;
+}
 
-/* PAGES */ .page{ display:none; width:100%; background:var(--card); padding:15px; margin-top:10px; border-radius:12px; box-sizing:border-box; }
+.login-card p {
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
 
-.active{display:block;}
+.input-group {
+  margin-bottom: 20px;
+}
 
-/* INPUTS FULL FIX */ input,button{ width:100%; padding:10px; margin-top:8px; border:none; border-radius:8px; box-sizing:border-box; }
+.input-group input {
+  width: 100%;
+  padding: 16px 20px;
+  background: #0f172a;
+  border: 1px solid var(--border);
+  border-radius: 60px;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
 
-button.action{ background:var(--accent); color:black; font-weight:bold; cursor:pointer; }
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.3);
+}
 
-button.action:hover{ background:#0ea5e9; }
+/* د روباټ جیکر سټایل */
+.robot-check {
+  background: #1e293b;
+  border: 1px solid var(--border);
+  border-radius: 60px;
+  padding: 12px 20px;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-/* BOOK GRID FIX (FULL SCREEN) */ .books{ display:grid; grid-template-columns:1fr; gap:10px; width:100%; }
+.robot-check:hover {
+  border-color: var(--primary);
+  background: #2d3a5e;
+}
 
-.book{ background:#0f172a; padding:12px; border-radius:10px; border:1px solid #1f2937; width:100%; box-sizing:border-box; }
+.robot-check input {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
 
-.book h3{ margin:0 0 5px 0; font-size:14px; color:var(--accent); }
+.robot-check label {
+  flex: 1;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
 
-a{color:var(--accent);}
+.robot-check.verified {
+  border-color: var(--success);
+  background: rgba(34,197,94,0.1);
+}
 
-/* RESPONSIVE (TABLET+) */ @media(min-width:600px){ .books{ grid-template-columns:repeat(2,1fr); } }
+.btn-login {
+  width: 100%;
+  background: var(--primary);
+  border: none;
+  padding: 16px;
+  border-radius: 60px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  color: #0f172a;
+}
 
-@media(min-width:900px){ .books{ grid-template-columns:repeat(3,1fr); } }
+.btn-login:hover {
+  background: white;
+  transform: scale(0.98);
+}
 
+.error-msg {
+  background: rgba(239,68,68,0.2);
+  padding: 12px;
+  border-radius: 60px;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #f87171;
+}
+
+/* اصلي اپلیکیشن */
+.main-app {
+  display: none;
+}
+
+header {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(16px);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(249,115,22,0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo h2 { font-size: 1.5rem; color: var(--primary); }
+
+/* د لټون بکس - سرچ بار */
+.search-container {
+  flex: 1;
+  max-width: 400px;
+  position: relative;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 12px 20px;
+  background: #0f172a;
+  border: 1px solid var(--border);
+  border-radius: 60px;
+  color: white;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.search-container input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.3);
+}
+
+.search-container input::placeholder {
+  color: var(--text-muted);
+}
+
+.user-badge {
+  background: #1e293b;
+  padding: 8px 20px;
+  border-radius: 60px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+nav {
+  background: #0f172acc;
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 20px;
+  position: sticky;
+  top: 80px;
+  z-index: 99;
+  border-bottom: 1px solid #334155;
+}
+
+.nav-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-light);
+  padding: 8px 24px;
+  border-radius: 40px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.nav-btn:hover, .nav-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #0f172a;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 25px auto;
+  padding: 0 20px;
+}
+
+.page {
+  display: none;
+  background: var(--card-bg);
+  border-radius: 32px;
+  padding: 24px;
+  margin-top: 20px;
+}
+
+.active-page {
+  display: block;
+}
+
+/* د لټون پایلې سرلیک */
+.search-info {
+  background: #1e293b;
+  padding: 10px 18px;
+  border-radius: 60px;
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.book-card {
+  background: #1e293b;
+  border-radius: 24px;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+  transition: 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+}
+
+.download-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.download-stats span {
+  background: #0f172a;
+  padding: 4px 12px;
+  border-radius: 60px;
+}
+
+.download-btn {
+  display: inline-block;
+  background: var(--primary);
+  color: #0f172a;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 60px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: 0.2s;
+  cursor: pointer;
+  border: none;
+  margin-top: 8px;
+}
+
+.download-btn:hover {
+  background: white;
+  transform: scale(1.02);
+}
+
+.request-card {
+  background: #1e1b3a;
+  border-radius: 24px;
+  padding: 18px;
+  margin-bottom: 16px;
+  border-left: 5px solid #f59e0b;
+}
+
+.request-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.btn-approve {
+  background: var(--success);
+  border: none;
+  padding: 8px 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-reject {
+  background: var(--danger);
+  border: none;
+  padding: 8px 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 18px;
+  background: #0f172a;
+  border: 1px solid var(--border);
+  border-radius: 60px;
+  color: white;
+  margin-top: 12px;
+}
+
+button.action-btn {
+  background: var(--primary);
+  width: 100%;
+  padding: 14px;
+  border-radius: 60px;
+  font-weight: bold;
+  margin-top: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.badge-pending {
+  background: #f59e0b;
+  color: black;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  display: inline-block;
+}
+
+.user-card {
+  background: #1e293b;
+  border-radius: 20px;
+  padding: 15px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.user-card button {
+  background: var(--danger);
+  border: none;
+  padding: 6px 16px;
+  border-radius: 40px;
+  cursor: pointer;
+}
+
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 20px;
+  right: 20px;
+  background: #1e293b;
+  border-left: 5px solid var(--primary);
+  padding: 14px;
+  border-radius: 70px;
+  text-align: center;
+  z-index: 3000;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
 </style>
 </head>
-<body><header>
-<h1>Zaky Book Store 📚 PRO</h1>
-<p>Mobile Fixed Layout Version</p>
-</header><nav>
-<button onclick="show('home')">کتابونه</button>
-<button onclick="show('upload')">Upload</button>
-<button onclick="show('admin')">ادمن</button>
-<button onclick="show('login')">Login</button>
-<button onclick="show('contact')">اړیکه</button>
-</nav><div class="container"><!-- HOME --><div id="home" class="page active">
-<h3>📚 Books</h3>
-<div id="list" class="books"></div>
-</div><!-- UPLOAD --><div id="upload" class="page">
-<h3>📤 Upload Book</h3>
-<input id="utitle" placeholder="Book Title">
-<input id="updf" placeholder="PDF Link">
-<button class="action" onclick="uploadBook()">Submit</button>
-</div><!-- ADMIN --><div id="admin" class="page">
-<h3>🛡 Admin</h3>
-<input id="title" placeholder="Book Title">
-<input id="pdf" placeholder="PDF Link">
-<button class="action" onclick="addBook()">Add Book</button>
-</div><!-- LOGIN --><div id="login" class="page">
-<h3>🔐 Login</h3>
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button class="action" onclick="register()">Register</button>
-<button class="action" onclick="login()">Login</button>
-</div><!-- CONTACT --><div id="contact" class="page">
-<h3>📞 Contact</h3>
-<p>📧 zangi32zaky@gmail.com</p>
-<p>📱 0093773701014</p>
-<p>💬 0093711933858</p>
-<p>📘 سیال احمدزی</p>
-</div></div><script>
-let books=[];
+<body>
 
-function show(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
+<!-- د لاګ ان مخ -->
+<div id="loginScreen" class="login-wrapper">
+  <div class="login-card">
+    <h1>📚 Zaky Book Store</h1>
+    <p>د لټون بکس + ډاونلوډ کاونټر • د روباټ جیکر محافظت</p>
+    <div class="input-group">
+      <input type="email" id="loginEmail" placeholder="برېښنالیک">
+    </div>
+    <div class="input-group">
+      <input type="password" id="loginPassword" placeholder="پاسورډ">
+    </div>
+    
+    <div id="loginRobotCheck" class="robot-check" onclick="toggleRobotCheck('login')">
+      <input type="checkbox" id="loginRobotInput" onclick="event.stopPropagation(); toggleRobotCheck('login')">
+      <label>🤖 زه روباټ نه یم (I am not a robot)</label>
+    </div>
+    
+    <button class="btn-login" id="loginBtn">🔐 ننوتل</button>
+    <div id="loginError" class="error-msg"></div>
+    <div style="margin-top: 24px; font-size:12px; text-align:center;">
+      <p>نوی یاست؟ لاندې راجسټر کړئ</p>
+      <hr style="margin:15px 0; border-color:#334155;">
+      <input type="text" id="regName" placeholder="نوم">
+      <input type="email" id="regEmail" placeholder="برېښنالیک">
+      <input type="password" id="regPass" placeholder="پاسورډ">
+      
+      <div id="registerRobotCheck" class="robot-check" onclick="toggleRobotCheck('register')">
+        <input type="checkbox" id="registerRobotInput" onclick="event.stopPropagation(); toggleRobotCheck('register')">
+        <label>🤖 زه روباټ نه یم (I am not a robot)</label>
+      </div>
+      
+      <button id="registerBtn" style="background:#334155; margin-top:12px; padding:12px; border-radius:60px; width:100%;">➕ راجسټرېشن</button>
+    </div>
+  </div>
+</div>
 
-function render(){
-  let box=document.getElementById('list');
-  box.innerHTML="";
-  books.forEach(b=>{
-    box.innerHTML+=`
-    <div class='book'>
-      <h3>${b.title}</h3>
-      <a href='${b.pdf}' target='_blank'>📖 Read</a>
-    </div>`;
-  });
-}
+<!-- اصلي اپلیکیشن -->
+<div id="mainApp" class="main-app">
+  <header>
+    <div class="header-container">
+      <div class="logo"><h2>📖 Zaky Book Store PRO</h2></div>
+      <!-- د لټون بکس (Search Box) -->
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="🔍 د کتاب نوم، لیکوال یا کټګورۍ دلته ولیکئ...">
+      </div>
+      <div class="user-badge"><span id="userNameDisplay"></span> <button id="logoutBtnMain" style="background:#ef4444; border:none; padding:5px 15px; border-radius:40px;">وتل</button></div>
+    </div>
+  </header>
+  <nav>
+    <button class="nav-btn" data-page="home">📚 کتابونه</button>
+    <button class="nav-btn" data-page="categories">📂 کټګورۍ</button>
+    <button class="nav-btn" data-page="requests">📝 زما غوښتنې</button>
+    <button class="nav-btn" data-page="admin-requests" id="adminRequestsNav" style="display:none;">👑 د کتاب غوښتنې</button>
+    <button class="nav-btn" data-page="admin-users" id="adminUsersNav" style="display:none;">👥 کارونکي</button>
+    <button class="nav-btn" data-page="messages">💬 پیغامونه</button>
+    <button class="nav-btn" data-page="contact">📞 اړیکه</button>
+  </nav>
+  <div class="container">
+    <div id="homePage" class="page active-page">
+      <h2>ټول کتابونه</h2>
+      <div id="searchResultsInfo" class="search-info" style="display:none;"></div>
+      <div id="homeBooksGrid" class="books-grid"></div>
+    </div>
+    
+    <div id="categoriesPage" class="page"><h2>کټګورۍ</h2><div style="display:flex; gap:10px; flex-wrap:wrap;"><button class="nav-btn" data-cat="all">ټول</button><button class="nav-btn" data-cat="school">ښوونځی</button><button class="nav-btn" data-cat="computer">کمپیوټر</button><button class="nav-btn" data-cat="history">تاریخ</button><button class="nav-btn" data-cat="poetry">شعر</button><button class="nav-btn" data-cat="other">نور</button></div><div id="categoryBooksGrid" class="books-grid"></div></div>
+    
+    <div id="requestsPage" class="page"><h2>📋 زما د کتاب غوښتنې</h2><div id="userRequestsList"></div><hr><h3>➕ نوی کتاب غوښتنه کول</h3><input id="requestTitle" placeholder="د کتاب نوم *"><select id="requestCategory"><option value="school">ښوونځی</option><option value="computer">کمپیوټر</option><option value="history">تاریخ</option><option value="poetry">شعر</option><option value="other">نور</option></select><input id="requestPdf" placeholder="PDF لینک *"><textarea id="requestDesc" rows="2" placeholder="لنډ توضیح..."></textarea><button id="submitRequestBtn" class="action-btn">📤 غوښتنه واستوه</button></div>
+    
+    <div id="adminRequestsPage" class="page"><h2>👑 د کتاب غوښتنې (منظورول / ردول)</h2><div id="pendingRequestsList"></div></div>
+    
+    <div id="adminUsersPage" class="page"><h2>👥 ټول کارونکي (ادمین کنټرول)</h2><div id="usersList"></div></div>
+    
+    <div id="messagesPage" class="page"><h2>پیغامونه</h2><div id="messagesList"></div><input id="msgName" placeholder="نوم"><input id="msgContact" placeholder="واټساپ"><textarea id="msgText" rows="2" placeholder="پیغام..."></textarea><button id="sendMsgBtn" class="action-btn">لیږل</button></div>
+    
+    <div id="contactPage" class="page"><h2>اړیکه</h2><p>📧 zangi32zaky@gmail.com<br>📞 0093773701014<br>💬 سیال احمدزی</p></div>
+  </div>
+</div>
 
-function addBook(){
-  books.push({title:title.value,pdf:pdf.value});
-  render();
-}
-
-function uploadBook(){
-  books.push({title:utitle.value,pdf:updf.value});
-  render();
-}
-
-function register(){
-  alert("Registered (demo)");
-}
-function register(){
-  let email = document.getElementById("email").value;
-  let pass = document.getElementById("password").value;
-
-  localStorage.setItem("userEmail", email);
-  localStorage.setItem("userPass", pass);
-
-  alert("Registered ✔");
-}
-
-function login(){
-  let email = document.getElementById("email").value;
-  let pass = document.getElementById("password").value;
-
-  let savedEmail = localStorage.getItem("userEmail");
-  let savedPass = localStorage.getItem("userPass");
-
-  if(email === savedEmail && pass === savedPass){
-    alert("Login Success ✔");
-  } else {
-    alert("Wrong Email or Password ❌");
+<script>
+  // ==================== د لټون بکس + ډاونلوډ کاونټر سره بشپړ سیسټم ====================
+  let users = [];
+  let books = [];
+  let bookRequests = [];
+  let messages = [];
+  let currentUser = null;
+  let currentSearchTerm = "";
+  
+  let loginRobotVerified = false;
+  let registerRobotVerified = false;
+  
+  function toggleRobotCheck(type){
+    if(type === 'login'){
+      loginRobotVerified = !loginRobotVerified;
+      document.getElementById("loginRobotInput").checked = loginRobotVerified;
+      let div = document.getElementById("loginRobotCheck");
+      if(loginRobotVerified) div.classList.add("verified");
+      else div.classList.remove("verified");
+    } else if(type === 'register'){
+      registerRobotVerified = !registerRobotVerified;
+      document.getElementById("registerRobotInput").checked = registerRobotVerified;
+      let div = document.getElementById("registerRobotCheck");
+      if(registerRobotVerified) div.classList.add("verified");
+      else div.classList.remove("verified");
+    }
   }
-}
-
-render();
-</script></body>
+  
+  // د بندیز سیستم
+  let failedAttempts = 0;
+  let banUntil = null;
+  
+  function loadBanData(){
+    const storedBan = localStorage.getItem("zaky_ban_until");
+    const storedFails = localStorage.getItem("zaky_fail_attempts");
+    if(storedBan) banUntil = parseInt(storedBan);
+    if(storedFails) failedAttempts = parseInt(storedFails);
+    if(banUntil && Date.now() > banUntil) {
+      banUntil = null;
+      failedAttempts = 0;
+      localStorage.removeItem("zaky_ban_until");
+      localStorage.setItem("zaky_fail_attempts", "0");
+    }
+  }
+  function saveBan(){
+    if(banUntil) localStorage.setItem("zaky_ban_until", banUntil);
+    localStorage.setItem("zaky_fail_attempts", failedAttempts);
+  }
+  function isBanned(){
+    return banUntil && Date.now() < banUntil;
+  }
+  function recordFailedLogin(){
+    failedAttempts++;
+    if(failedAttempts >= 3){
+      banUntil = Date.now() + (4 * 24 * 60 * 60 * 1000);
+      failedAttempts = 0;
+      saveBan();
+      return true;
+    }
+    saveBan();
+    return false;
+  }
+  function resetFailedAttempts(){
+    failedAttempts = 0;
+    banUntil = null;
+    saveBan();
+  }
+  
+  function hashPass(pwd){
+    return btoa(pwd + "zakySecurePepper2025!");
+  }
+  
+  function loadData(){
+    const storedUsers = localStorage.getItem("zaky_users_secure_v5");
+    if(storedUsers) users = JSON.parse(storedUsers);
+    else {
+      users = [
+        { id:1, name:"ادمین مرکزی", email:"admin@zaky.com", password:hashPass("Admin@123"), role:"admin", createdAt:new Date().toISOString() },
+        { id:2, name:"احمد جان", email:"ahmad@example.com", password:hashPass("123456"), role:"user", createdAt:new Date().toISOString() }
+      ];
+    }
+    const storedBooks = localStorage.getItem("zaky_books_approved_v5");
+    if(storedBooks) books = JSON.parse(storedBooks);
+    else books = [
+      { id:1, title:"پښتو ژبه لومړی ټولګی", category:"school", pdf:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", desc:"د لومړي ټولګي کتاب", author:"وزارت تعلیم", downloads:0 },
+      { id:2, title:"کمپیوټر پېژندنه", category:"computer", pdf:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", desc:"د کمپیوټر اساسات", author:"احمد رضا", downloads:0 },
+      { id:3, title:"د افغانستان تاریخ", category:"history", pdf:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", desc:"له پخوانیو وختونو تر اوسه", author:"پوهاند محمد", downloads:0 },
+      { id:4, title:"د رحمان بابا دیوان", category:"poetry", pdf:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", desc:"پښتو مشهور شاعر", author:"رحمان بابا", downloads:0 },
+    ];
+    const storedRequests = localStorage.getItem("zaky_book_requests_v5");
+    if(storedRequests) bookRequests = JSON.parse(storedRequests);
+    else bookRequests = [];
+    
+    const storedMsgs = localStorage.getItem("zaky_messages_secure_v5");
+    messages = storedMsgs ? JSON.parse(storedMsgs) : [];
+    const session = localStorage.getItem("zaky_current_session_v5");
+    if(session) currentUser = JSON.parse(session);
+  }
+  
+  function saveAll(){
+    localStorage.setItem("zaky_users_secure_v5", JSON.stringify(users));
+    localStorage.setItem("zaky_books_approved_v5", JSON.stringify(books));
+    localStorage.setItem("zaky_book_requests_v5", JSON.stringify(bookRequests));
+    localStorage.setItem("zaky_messages_secure_v5", JSON.stringify(messages));
+    if(currentUser) localStorage.setItem("zaky_current_session_v5", JSON.stringify(currentUser));
+    else localStorage.removeItem("zaky_current_session_v5");
+  }
+  
+  // د ډاونلوډ کاونټر زیاتول
+  function incrementDownload(bookId){
+    const book = books.find(b => b.id === bookId);
+    if(book){
+      book.downloads = (book.downloads || 0) + 1;
+      saveAll();
+      // د لټون پر بنسټ بیا رینډر کول
+      performSearch(currentSearchTerm);
+      // که چیرې په کټګورۍ پاڼه کې یو، هغه هم تازه کړو
+      const currentCat = document.querySelector("[data-cat].active");
+      if(currentCat && currentCat.getAttribute("data-cat")){
+        filterCategory(currentCat.getAttribute("data-cat"));
+      }
+    }
+  }
+  
+  // د ډاونلوډ هینډلر
+  function handleDownload(bookId, pdfUrl){
+    incrementDownload(bookId);
+    window.open(pdfUrl, '_blank');
+    showToast("📥 ډاونلوډ پیل شو! دا کتاب " + (books.find(b=>b.id===bookId)?.downloads || 0) + " ځله ډاونلوډ شوی");
+  }
+  
+  // ========== د لټون فنکشن ==========
+  function performSearch(searchTerm){
+    currentSearchTerm = searchTerm;
+    if(!searchTerm || searchTerm.trim() === ""){
+      document.getElementById("searchResultsInfo").style.display = "none";
+      renderBooks("homeBooksGrid", books);
+      return;
+    }
+    const term = searchTerm.toLowerCase();
+    const filtered = books.filter(book => 
+      book.title.toLowerCase().includes(term) ||
+      (book.author && book.author.toLowerCase().includes(term)) ||
+      (book.desc && book.desc.toLowerCase().includes(term)) ||
+      book.category.toLowerCase().includes(term)
+    );
+    const infoDiv = document.getElementById("searchResultsInfo");
+    infoDiv.style.display = "block";
+    infoDiv.innerHTML = `🔍 د "${escapeHtml(searchTerm)}" لپاره ${filtered.length} پایلې وموندل شوې`;
+    renderBooks("homeBooksGrid", filtered);
+  }
+  
+  // د کتابونو رینډر کول (د ډاونلوډ تڼۍ سره)
+  function renderBooks(containerId, bookArray){
+    const cont = document.getElementById(containerId);
+    if(!cont) return;
+    if(bookArray.length===0){ 
+      cont.innerHTML = "<div class='no-results'>😢 هیڅ کتاب نشته. مهرباني وکړئ بله کلیمه وکاروئ.</div>"; 
+      return; 
+    }
+    cont.innerHTML = bookArray.map(b => `
+      <div class='book-card'>
+        <h3>📖 ${escapeHtml(b.title)}</h3>
+        <div class='book-meta'>📂 ${escapeHtml(b.category)} ${b.author ? `| ✍️ ${escapeHtml(b.author)}` : ''}</div>
+        <p>${escapeHtml(b.desc||"")}</p>
+        <div class='download-stats'>
+          <span>⬇️ ${b.downloads || 0} ځله ډاونلوډ شوی</span>
+        </div>
+        <button class='download-btn' onclick='handleDownload(${b.id}, "${escapeHtml(b.pdf)}")'>📥 ډاونلوډ کول</button>
+      </div>
+    `).join("");
+  }
+  
+  function renderHome(){ 
+    if(currentSearchTerm && currentSearchTerm.trim() !== ""){
+      performSearch(currentSearchTerm);
+    } else {
+      document.getElementById("searchResultsInfo").style.display = "none";
+      renderBooks("homeBooksGrid", books);
+    }
+  }
+  
+  function filterCategory(cat){
+    let filtered = cat==="all" ? books : books.filter(b=>b.category===cat);
+    renderBooks("categoryBooksGrid", filtered);
+  }
+  
+  function renderUserRequests(){
+    const container = document.getElementById("userRequestsList");
+    if(!container) return;
+    const myRequests = bookRequests.filter(r => r.requesterEmail === currentUser?.email);
+    if(myRequests.length === 0){ container.innerHTML = "<p>تاسو تر اوسه کومه غوښتنه نه ده کړې</p>"; return; }
+    container.innerHTML = myRequests.map(r => `
+      <div class="request-card">
+        <h3>${escapeHtml(r.title)}</h3>
+        <p>کټګورۍ: ${r.category} | PDF: <a href="${escapeHtml(r.pdf)}" target="_blank">لینک</a></p>
+        <p>${escapeHtml(r.desc||"")}</p>
+        <span class="badge-pending">${r.status === "pending" ? "په انتظار کې" : (r.status==="approved"?"منظوره شوی":"رد شوی")}</span>
+      </div>
+    `).join("");
+  }
+  
+  function renderPendingRequestsForAdmin(){
+    const container = document.getElementById("pendingRequestsList");
+    if(!container) return;
+    const pending = bookRequests.filter(r => r.status === "pending");
+    if(pending.length === 0){ container.innerHTML = "<p>هیڅ نوې غوښتنه نشته</p>"; return; }
+    container.innerHTML = pending.map(r => `
+      <div class="request-card">
+        <h3>📘 ${escapeHtml(r.title)}</h3>
+        <p><strong>غوښتونکی:</strong> ${escapeHtml(r.requesterName)} (${escapeHtml(r.requesterEmail)})</p>
+        <p><strong>کټګورۍ:</strong> ${r.category}</p>
+        <p><strong>PDF:</strong> <a href="${escapeHtml(r.pdf)}" target="_blank">لینک</a></p>
+        <p>${escapeHtml(r.desc||"")}</p>
+        <div class="request-buttons">
+          <button class="btn-approve" onclick="approveRequest(${r.id})">✅ منظورول</button>
+          <button class="btn-reject" onclick="rejectRequest(${r.id})">❌ ردول</button>
+        </div>
+      </div>
+    `).join("");
+  }
+  
+  function renderUsersForAdmin(){
+    const container = document.getElementById("usersList");
+    if(!container) return;
+    container.innerHTML = users.map(u => `
+      <div class="user-card">
+        <div><strong>${escapeHtml(u.name)}</strong><br><small>${escapeHtml(u.email)}</small><br><small>رول: ${u.role === "admin" ? "ادمین" : "کارونکی"}</small></div>
+        ${u.email !== "admin@zaky.com" ? `<button onclick="deleteUser(${u.id})">🗑️ حذف</button>` : '<span style="color:#f97316;">ادمین اصلی</span>'}
+      </div>
+    `).join("");
+  }
+  
+  window.deleteUser = (id) => {
+    if(currentUser?.role !== "admin") return;
+    if(confirm("آیا تاسو غواړئ دا کارونکی حذف کړئ؟")){
+      users = users.filter(u => u.id !== id);
+      saveAll();
+      renderUsersForAdmin();
+      showToast("کارونکی حذف شو");
+    }
+  };
+  
+  window.approveRequest = (id) => {
+    const req = bookRequests.find(r => r.id === id);
+    if(req && req.status === "pending"){
+      req.status = "approved";
+      const newBook = {
+        id: Date.now(),
+        title: req.title,
+        category: req.category,
+        pdf: req.pdf,
+        desc: req.desc || "د کارونکي لخوا غوښتنه شوی",
+        author: req.requesterName,
+        downloads: 0,
+      };
+      books.push(newBook);
+      saveAll();
+      renderHome();
+      renderPendingRequestsForAdmin();
+      renderUserRequests();
+      showToast(`کتاب "${req.title}" منظور شو`);
+    }
+  };
+  
+  window.rejectRequest = (id) => {
+    const req = bookRequests.find(r => r.id === id);
+    if(req && req.status === "pending"){
+      req.status = "rejected";
+      saveAll();
+      renderPendingRequestsForAdmin();
+      renderUserRequests();
+      showToast(`غوښتنه "${req.title}" رد شوه`);
+    }
+  };
+  
+  function submitBookRequest(title, category, pdf, desc){
+    if(!title || !pdf){ showToast("سرلیک او لینک اړین دی"); return false; }
+    const newRequest = {
+      id: Date.now(),
+      title, category, pdf, desc: desc || "",
+      requesterName: currentUser.name,
+      requesterEmail: currentUser.email,
+      status: "pending",
+      date: new Date().toLocaleString()
+    };
+    bookRequests.push(newRequest);
+    saveAll();
+    renderUserRequests();
+    return true;
+  }
+  
+  function renderMessages(){
+    const container = document.getElementById("messagesList");
+    if(!container) return;
+    container.innerHTML = messages.map(m=>`<div style='background:#1e293b; padding:12px; border-radius:20px; margin-bottom:12px;'><strong>${escapeHtml(m.name)}</strong> (${escapeHtml(m.contact)})<p>${escapeHtml(m.text)}</p>${currentUser?.role==="admin" ? `<button onclick='deleteMsg(${m.id})' style='background:#ef4444; border:none; padding:4px 12px; border-radius:40px;'>حذف</button>` : ''}</div>`).join("");
+  }
+  window.deleteMsg = (id)=>{ if(currentUser?.role==="admin"){ messages=messages.filter(m=>m.id!==id); saveAll(); renderMessages(); } };
+  
+  // ========== لاګ ان منطق ==========
+  function attemptLogin(email, password){
+    if(!loginRobotVerified){
+      document.getElementById("loginError").innerHTML = "⚠️ مهرباني وکړئ د روباټ چیک باکس کې ټک وکړئ!";
+      return false;
+    }
+    if(isBanned()){
+      const remaining = Math.ceil((banUntil - Date.now()) / (1000*60*60*24));
+      document.getElementById("loginError").innerHTML = `⛔ تاسو د ${remaining} ورځو لپاره بندیز یاست.`;
+      return false;
+    }
+    const hashed = hashPass(password);
+    const user = users.find(u=> u.email === email && u.password === hashed);
+    if(user){
+      resetFailedAttempts();
+      currentUser = { name: user.name, email: user.email, role: user.role };
+      saveAll();
+      return true;
+    } else {
+      const bannedNow = recordFailedLogin();
+      if(bannedNow){
+        document.getElementById("loginError").innerHTML = "⛔ 3 ځله غلط پاسورډ! تاسو د 4 ورځو لپاره بند شئ.";
+      } else {
+        let left = 3 - failedAttempts;
+        document.getElementById("loginError").innerHTML = `غلط پاسورډ! تاسو ${left} فرصت لرئ.`;
+      }
+      return false;
+    }
+  }
+  
+  function register(name, email, pass){
+    if(!registerRobotVerified){
+      alert("⚠️ مهرباني وکړئ د راجسټر لپاره د روباټ چیک باکس کې ټک وکړئ!");
+      return false;
+    }
+    if(users.find(u=> u.email === email)){ alert("دا برېښنالیک شتون لري"); return false; }
+    users.push({ id:Date.now(), name, email, password: hashPass(pass), role:"user", createdAt:new Date().toISOString() });
+    saveAll();
+    return true;
+  }
+  
+  function showAppAfterLogin(){
+    if(currentUser){
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("mainApp").style.display = "block";
+      document.getElementById("userNameDisplay").innerText = currentUser.name + (currentUser.role==="admin"?" (مدیر)":"");
+      renderHome();
+      renderMessages();
+      renderUserRequests();
+      if(currentUser.role === "admin"){
+        document.getElementById("adminRequestsNav").style.display = "inline-block";
+        document.getElementById("adminUsersNav").style.display = "inline-block";
+        renderPendingRequestsForAdmin();
+        renderUsersForAdmin();
+      } else {
+        document.getElementById("adminRequestsNav").style.display = "none";
+        document.getElementById("adminUsersNav").style.display = "none";
+      }
+    } else {
+      document.getElementById("loginScreen").style.display = "flex";
+      document.getElementById("mainApp").style.display = "none";
+      loginRobotVerified = false;
+      registerRobotVerified = false;
+      document.getElementById("loginRobotInput").checked = false;
+      document.getElementById("registerRobotInput").checked = false;
+      document.getElementById("loginRobotCheck").classList.remove("verified");
+      document.getElementById("registerRobotCheck").classList.remove("verified");
+    }
+  }
+  
+  function logout(){
+    currentUser = null;
+    saveAll();
+    showAppAfterLogin();
+  }
+  
+  function showToast(msg){
+    let toast = document.querySelector(".toast");
+    if(toast) toast.remove();
+    let div = document.createElement("div");
+    div.className = "toast";
+    div.innerText = msg;
+    document.body.appendChild(div);
+    setTimeout(()=>div.remove(), 3000);
+  }
+  
+  // ========== Event Listeners ==========
+  document.getElementById("loginBtn").onclick = () => {
+    const email = document.getElementById("loginEmail").value;
+    const pass = document.getElementById("loginPassword").value;
+    if(attemptLogin(email, pass)){
+      showAppAfterLogin();
+      document.getElementById("loginError").innerHTML = "";
+    }
+  };
+  document.getElementById("registerBtn").onclick = () => {
+    const name = document.getElementById("regName").value;
+    const email = document.getElementById("regEmail").value;
+    const pass = document.getElementById("regPass").value;
+    if(name && email && pass){
+      if(register(name,email,pass)) alert("راجسټر بریالی! اوس ننوځئ");
+    } else alert("ټول ساحې ډک کړئ");
+  };
+  document.getElementById("logoutBtnMain").onclick = () => logout();
+  
+  document.getElementById("submitRequestBtn").onclick = () => {
+    if(!currentUser){ showToast("تاسو لاګ ان نه یاست"); return; }
+    let title = document.getElementById("requestTitle").value;
+    let cat = document.getElementById("requestCategory").value;
+    let pdf = document.getElementById("requestPdf").value;
+    let desc = document.getElementById("requestDesc").value;
+    if(submitBookRequest(title, cat, pdf, desc)){
+      showToast("غوښتنه واستول شوه! ادمین به یې وڅاري.");
+      document.getElementById("requestTitle").value = "";
+      document.getElementById("requestPdf").value = "";
+      document.getElementById("requestDesc").value = "";
+    }
+  };
+  
+  document.getElementById("sendMsgBtn").onclick = () => {
+    let n=document.getElementById("msgName").value, c=document.getElementById("msgContact").value, t=document.getElementById("msgText").value;
+    if(n&&c&&t){ messages.unshift({id:Date.now(),name:n,contact:c,text:t,date:new Date().toLocaleString()}); saveAll(); renderMessages(); showToast("پیغام واستول شو");}
+  };
+  
+  // د لټون بکس event
+  const searchInput = document.getElementById("searchInput");
+  if(searchInput){
+    searchInput.addEventListener("input", (e) => {
+      performSearch(e.target.value);
+    });
+  }
+  
+  // نویګیشن
+  document.querySelectorAll(".nav-btn").forEach(btn=>{
+    btn.onclick = ()=>{
+      let pageId = btn.getAttribute("data-page")+"Page";
+      document.querySelectorAll(".page").forEach(p=>p.classList.remove("active-page"));
+      document.getElementById(pageId).classList.add("active-page");
+      if(pageId === "homePage") {
+        // کور ته تللو سره د لټون حالت پاتې شي
+        performSearch(searchInput ? searchInput.value : "");
+      }
+      if(pageId === "categoriesPage") filterCategory("all");
+      if(pageId === "requestsPage") renderUserRequests();
+      if(pageId === "adminRequestsPage" && currentUser?.role==="admin") renderPendingRequestsForAdmin();
+      if(pageId === "adminUsersPage" && currentUser?.role==="admin") renderUsersForAdmin();
+      if(pageId === "messagesPage") renderMessages();
+    };
+  });
+  document.querySelectorAll("[data-cat]").forEach(btn=>{
+    btn.onclick = ()=> {
+      document.querySelectorAll("[data-cat]").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      filterCategory(btn.getAttribute("data-cat"));
+    };
+  });
+  
+  function escapeHtml(str){ if(!str) return ""; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;});}
+  
+  // نړیوال فنکشن
+  window.handleDownload = handleDownload;
+  
+  loadBanData();
+  loadData();
+  showAppAfterLogin();
+</script>
+</body>
 </html>
