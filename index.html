@@ -112,9 +112,28 @@ function uploadBook(){
 function register(){
   alert("Registered (demo)");
 }
+function register(){
+  let email = document.getElementById("email").value;
+  let pass = document.getElementById("password").value;
+
+  localStorage.setItem("userEmail", email);
+  localStorage.setItem("userPass", pass);
+
+  alert("Registered ✔");
+}
 
 function login(){
-  alert("Login (demo)");
+  let email = document.getElementById("email").value;
+  let pass = document.getElementById("password").value;
+
+  let savedEmail = localStorage.getItem("userEmail");
+  let savedPass = localStorage.getItem("userPass");
+
+  if(email === savedEmail && pass === savedPass){
+    alert("Login Success ✔");
+  } else {
+    alert("Wrong Email or Password ❌");
+  }
 }
 
 render();
